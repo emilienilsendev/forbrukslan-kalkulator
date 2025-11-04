@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Forbrukslån Kalkulator - Beregn månedsbeløp, totalpris og effektiv rente på forbrukslån">
+    <meta name="keywords" content="forbrukslån, lån kalkulator, rente, månedsbeløp, effektiv rente, lånekalkulator">
+    <meta name="author" content="Emilie Nilsen">
+    
+    <title>Forbrukslån Kalkulator | Beregn lånekostnader og månedsbeløp</title>
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Forbrukslån Kalkulator">
+    <meta property="og:description" content="Beregn månedsbeløp, totalpris og effektiv rente på forbrukslån">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://emilienilsendev.github.io/forbrukslan-kalkulator/">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💰</text></svg>">
+    
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Forbrukslån Kalkulator</h1>
+            <p class="description">Beregn månedsbeløp, totalpris og effektiv rente på forbrukslån. Få full oversikt over lånekostnadene dine.</p>
+        </header>
+        
+        <main class="calculator">
+            <div class="calculator-grid">
+                <div class="input-section">
+                    <div class="form-group">
+                        <label for="loan-amount">Lånebeløp (NOK)</label>
+                        <div class="input-with-slider">
+                            <input type="number" id="loan-amount" min="10000" max="1000000" step="1000" value="200000">
+                            <input type="range" id="loan-amount-slider" min="10000" max="1000000" step="1000" value="200000">
+                        </div>
+                        <div class="input-hint">10 000 - 1 000 000 NOK</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="interest-rate">Nominell rente (%)</label>
+                        <div class="input-with-slider">
+                            <input type="number" id="interest-rate" min="1" max="25" step="0.1" value="8.5">
+                            <input type="range" id="interest-rate-slider" min="1" max="25" step="0.1" value="8.5">
+                        </div>
+                        <div class="input-hint">1% - 25%</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="loan-term">Løpetid (år)</label>
+                        <div class="input-with-slider">
+                            <input type="number" id="loan-term" min="1" max="20" step="1" value="5">
+                            <input type="range" id="loan-term-slider" min="1" max="20" step="1" value="5">
+                        </div>
+                        <div class="input-hint">1 - 20 år</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="fee-type">Gebyrtype</label>
+                        <select id="fee-type">
+                            <option value="none">Ingen gebyr</option>
+                            <option value="fixed">Fast gebyr</option>
+                            <option value="percentage">Prosent av lån</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group" id="fee-amount-group" style="display: none;">
+                        <label for="fee-amount">Gebyrbeløp</label>
+                        <input type="number" id="fee-amount" min="0" step="100" value="1000">
+                        <div class="input-hint" id="fee-hint"></div>
+                    </div>
+                </div>
+                
+                <div class="results-section">
+                    <div class="result-cards">
+                        <div class="result-card">
+                            <div class="result-icon">📅</div>
+                            <div class="result-content">
+                                <div class="result-label">Månedsbeløp</div>
+                                <div class="result-value" id="monthly-payment">0 kr</div>
+                            </div>
+                        </div>
+                        
+                        <div class="result-card">
+                            <div class="result-icon">💰</div>
+                            <div class="result-content">
+                                <div class="result-label">Totalpris</div>
+                                <div class="result-value" id="total-cost">0 kr</div>
+                            </div>
+                        </div>
+                        
+                        <div class="result-card">
+                            <div class="result-icon">📊</div>
+                            <div class="result-content">
+                                <div class="result-label">Effektiv rente</div>
+                                <div class="result-value" id="effective-rate">0 %</div>
+                            </div>
+                        </div>
+                        
+                        <div class="result-card">
+                            <div class="result-icon">💸</div>
+                            <div class="result-content">
+                                <div class="result-label">Rentekostnad</div>
+                                <div class="result-value" id="total-interest">0 kr</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="amortization-section">
+                        <h3>Avdragstabell</h3>
+                        <div class="amortization-chart" id="amortization-chart">
+                            <div class="chart-bars">
+                                <!-- Chart bars will be generated by JavaScript -->
+                            </div>
+                        </div>
+                        
+                        <div class="amortization-table-container">
+                            <table class="amortization-table" id="amortization-table">
+                                <thead>
+                                    <tr>
+                                        <th>År</th>
+                                        <th>Gjenværende gjeld</th>
+                                        <th>Renter</th>
+                                        <th>Avdrag</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Table rows will be generated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="info-boxes">
+                <div class="info-box">
+                    <h3>📝 Slik beregnes lånet</h3>
+                    <p>Månedsbeløpet beregnes ved annuitetsmetoden, hvor du betaler samme beløp hver måned. I starten betaler du mest i renter, og etter hvert blir avdragene større.</p>
+                    <div class="formula">
+                        Månedsbeløp = (Lånebeløp × Rente/12) / (1 - (1 + Rente/12)<sup>-måneder</sup>)
+                    </div>
+                </div>
+                
+                <div class="info-box">
+                    <h3>💡 Tips til forbrukslån</h3>
+                    <ul>
+                        <li><strong>Sammenlign tilbud:</strong> Alltid sammenlign effektiv rente fra flere banker</li>
+                        <li><strong>Vurder behov:</strong> Lån kun til nødvendige formål</li>
+                        <li><strong>Sjekk gebyrer:</strong> Mange lån har opprettelsesgebyr og termingebyr</li>
+                        <li><strong>Les vilkår:</strong> Forstå betingelsene før du signerer</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+        
+        <footer>
+            <div class="footer-content">
+                <p><strong>Viktig informasjon:</strong> Denne kalkulatoren gir kun veiledende beregninger. Faktiske lånevilkår kan variere mellom ulike utlånere.</p>
+                <p>Utviklet med ❤️ for GitHub - © 2024 <a href="https://github.com/emilienilsendev" target="_blank" rel="noopener">Emilie Nilsen</a></p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
